@@ -1,5 +1,7 @@
+import { Auth } from "./pages";
+
 const App = () => {
-	return <div>App</div>;
+	return <Auth />;
 };
 
 export default App;
