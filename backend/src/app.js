@@ -7,7 +7,12 @@ import {
 } from "./controllers/user.controller.js";
 import cors from "cors";
 import ApiResponse from "./ApiResponse.js";
-import { addContact, fetchContacts } from "./controllers/contact.controller.js";
+import {
+	addContact,
+	fetchContacts,
+	editContact,
+	deleteContact
+} from "./controllers/contact.controller.js";
 
 const app = express();
 
@@ -24,5 +29,7 @@ app.post("/api/logout", logout);
 app.post("/api/user", getUser);
 app.post("/api/contact/add", addContact);
 app.post("/api/contact/fetch", fetchContacts);
+app.post("/api/contact/edit", editContact);
+app.post("/api/contact/delete", deleteContact);
 
 export default app;
