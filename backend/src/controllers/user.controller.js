@@ -32,7 +32,10 @@ export const signup = async (req, res) => {
 			message: "User registered successfully"
 		});
 	} catch (error) {
-		res.status(400).send(error.message);
+		res.status(400).json({
+			success: false,
+			message: error.message
+		});
 	}
 };
 
@@ -56,7 +59,10 @@ export const login = async (req, res) => {
 			message: "User logged in successfully"
 		});
 	} catch (error) {
-		res.status(400).send(error.message);
+		res.status(400).json({
+			success: false,
+			message: error.message
+		});
 	}
 };
 
@@ -77,7 +83,10 @@ export const logout = async (req, res) => {
 			message: "User logged out successfully"
 		});
 	} catch (error) {
-		res.status(400).send(error.message);
+		res.status(400).json({
+			success: false,
+			message: error.message
+		});
 	}
 };
 
@@ -89,10 +98,14 @@ export const getUser = async (req, res) => {
 		`);
 		if (rows.length == 0) throw new Error("No such user exists");
 		res.status(200).json({
+			success: true,
 			dets: { ...rows[0], uname },
 			message: "User fetched successfully"
 		});
 	} catch (error) {
-		res.status(400).send(error.message);
+		res.status(400).json({
+			success: false,
+			message: error.message
+		});
 	}
 };

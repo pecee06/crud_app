@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { host } from "./constants.js";
 import { updateDets, login } from "./redux/user.slice.js";
+import { Header } from "./components";
+import { Home } from "./pages";
 
 const App = () => {
 	const navigate = useNavigate();
@@ -20,13 +22,27 @@ const App = () => {
 				body: JSON.stringify({ uname: localStorage.getItem("uname") })
 			})
 				.then((res) => res.json())
-				.then((data) => dispatch(updateDets(data.dets)))
+				.then((data) => {
+					if (data.success) dispatch(updateDets(data.dets));
+					else alert(data.message);
+				})
 				.catch((error) => console.error(error))
 				.finally(() => dispatch(login(localStorage.getItem("uname"))));
 		}
 	}, []);
 
-	return <main></main>;
+	return (
+		<main
+			className="poppins-regular"
+			style={{
+				display: "flex",
+				flexDirection: "column"
+			}}
+		>
+			<Header />
+			<Home />
+		</main>
+	);
 };
 
 export default App;
