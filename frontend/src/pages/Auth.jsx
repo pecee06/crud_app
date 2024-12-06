@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Input, Button } from "../components";
 import { themeBlue, themeLightGray, host } from "../constants";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/user.slice";
 
 const Auth = () => {
 	const [isSignupForm, setIsSignupForm] = useState(true);
@@ -11,6 +13,7 @@ const Auth = () => {
 	const [uname, setUname] = useState("");
 	const [passwd, setPasswd] = useState("");
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const resetFields = () => {
 		setName("");
@@ -112,10 +115,11 @@ const Auth = () => {
 							})
 								.then((res) => res.json())
 								.then((data) => {
-									if (data.success) navigate("/");
+									if (data.success) dispatch(login(uname));
 									else alert(data.message);
 								})
-								.catch((error) => console.error(error));
+								.catch((error) => console.error(error))
+								.finally(() => navigate("/"));
 						}
 						resetFields();
 					}}

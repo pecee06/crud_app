@@ -80,3 +80,19 @@ export const logout = async (req, res) => {
 		res.status(400).send(error.message);
 	}
 };
+
+export const getUser = async (req, res) => {
+	const { uname } = req.body;
+	try {
+		const [rows, _] = await connection.query(`
+			select name, phone, sex from user where username = '${uname}';
+		`);
+		if (rows.length == 0) throw new Error("No such user exists");
+		res.status(200).json({
+			dets: { ...rows[0], uname },
+			message: "User fetched successfully"
+		});
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+};
