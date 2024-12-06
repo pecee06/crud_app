@@ -5,7 +5,7 @@ export default async () => {
 		const connection = await mysql.createConnection({
 			host: "localhost",
 			user: "root",
-			database: "project",
+			database: process.env.DB,
 			port: process.env.DB_PORT,
 			password: process.env.DB_PASSWORD
 		});
