@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input, Button } from "../components";
-import { themeBlue, themeLightGray } from "../constants";
+import { themeBlue, themeLightGray, host } from "../constants";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
 	const [isSignupForm, setIsSignupForm] = useState(true);
@@ -9,6 +10,7 @@ const Auth = () => {
 	const [sex, setSex] = useState(2);
 	const [uname, setUname] = useState("");
 	const [passwd, setPasswd] = useState("");
+	const navigate = useNavigate();
 
 	const resetFields = () => {
 		setName("");
@@ -22,7 +24,7 @@ const Auth = () => {
 		return {
 			name,
 			phone,
-			sex,
+			sex: sex == 0 ? "M" : sex == 1 ? "F" : "O",
 			uname,
 			passwd
 		};
@@ -86,8 +88,35 @@ const Auth = () => {
 					}}
 					onSubmit={(e) => {
 						e.preventDefault();
-						// API calls
-						console.log(encapsulate()); // testing
+						if (isSignupForm) {
+							fetch(`${host}/api/signup`, {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify(encapsulate())
+							})
+								.then((res) => res.json())
+								.then((data) => {
+									if (data.success) setIsSignupForm(false);
+									else alert(data.message);
+								})
+								.catch((error) => console.error(error));
+						} else {
+							fetch(`${host}/api/login`, {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify(encapsulate())
+							})
+								.then((res) => res.json())
+								.then((data) => {
+									if (data.success) navigate("/");
+									else alert(data.message);
+								})
+								.catch((error) => console.error(error));
+						}
 						resetFields();
 					}}
 				>
