@@ -1,12 +1,14 @@
 import { Input, Button } from "./";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { host, themeBlue } from "../constants";
+import { useSelector, useDispatch } from "react-redux";
+import { host, themeBlue, themeGreen } from "../constants";
+import { add } from "../redux/contacts.slice";
 
 const Dashboard = () => {
 	const [name, setName] = useState("");
 	const [phone, setPhone] = useState("");
 	const userState = useSelector((state) => state.user);
+	const dispatch = useDispatch();
 
 	return (
 		<div
@@ -14,7 +16,9 @@ const Dashboard = () => {
 			style={{
 				display: "flex",
 				flexDirection: "column",
-				gap: "1vmax"
+				gap: "1vmax",
+				minHeight: "25vh",
+				justifyContent: "center"
 			}}
 		>
 			<h3
@@ -32,17 +36,20 @@ const Dashboard = () => {
 				}}
 				onSubmit={(e) => {
 					e.preventDefault();
+					const obj = {
+						uname: localStorage.getItem("uname"),
+						name,
+						phone
+					};
 					fetch(`${host}/api/contact/add`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
 						},
-						body: JSON.stringify({
-							uname: localStorage.getItem("uname"),
-							name,
-							phone
-						})
-					}).catch((error) => console.error(error));
+						body: JSON.stringify(obj)
+					})
+						.then(() => dispatch(add(obj)))
+						.catch((error) => console.error(error));
 					setName("");
 					setPhone("");
 				}}
@@ -71,7 +78,14 @@ const Dashboard = () => {
 						onChange={(e) => setPhone(e.target.value)}
 					/>
 				</div>
-				<Button type="submit">Add</Button>
+				<Button
+					type="submit"
+					style={{
+						backgroundColor: themeGreen
+					}}
+				>
+					Add
+				</Button>
 			</form>
 		</div>
 	);
