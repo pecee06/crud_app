@@ -1,5 +1,6 @@
 import { connection } from "../server.js";
 import bcrypt from "bcryptjs";
+import ApiResponse from "../ApiResponse.js";
 
 const createUserTable = async () => {
 	await connection.query(`
@@ -27,15 +28,16 @@ export const signup = async (req, res) => {
         `,
 			[phone ? phone : null]
 		);
-		res.status(200).json({
-			success: true,
-			message: "User registered successfully"
-		});
+		res
+			.status(200)
+			.json(new ApiResponse({ message: "User registered successfully" }));
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: error.message
-		});
+		res.status(400).json(
+			new ApiResponse({
+				success: false,
+				message: error.message
+			})
+		);
 	}
 };
 
@@ -54,15 +56,16 @@ export const login = async (req, res) => {
             update user set online = 1 where username = '${uname}';
         `);
 
-		res.status(200).json({
-			success: true,
-			message: "User logged in successfully"
-		});
+		res
+			.status(200)
+			.json(new ApiResponse({ message: "User logged in successfully" }));
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: error.message
-		});
+		res.status(400).json(
+			new ApiResponse({
+				success: false,
+				message: error.message
+			})
+		);
 	}
 };
 
@@ -78,15 +81,16 @@ export const logout = async (req, res) => {
             update user set online = 0 where username = '${uname}'
         `);
 
-		res.status(200).json({
-			success: true,
-			message: "User logged out successfully"
-		});
+		res
+			.status(200)
+			.json(new ApiResponse({ message: "User logged out successfully" }));
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: error.message
-		});
+		res.status(400).json(
+			new ApiResponse({
+				success: false,
+				message: error.message
+			})
+		);
 	}
 };
 
@@ -97,15 +101,18 @@ export const getUser = async (req, res) => {
 			select name, phone, sex from user where username = '${uname}';
 		`);
 		if (rows.length == 0) throw new Error("No such user exists");
-		res.status(200).json({
-			success: true,
-			dets: { ...rows[0], uname },
-			message: "User fetched successfully"
-		});
+		res.status(200).json(
+			new ApiResponse({
+				dets: { ...rows[0], uname },
+				message: "User fetched successfully"
+			})
+		);
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: error.message
-		});
+		res.status(400).json(
+			new ApiResponse({
+				success: false,
+				message: error.message
+			})
+		);
 	}
 };

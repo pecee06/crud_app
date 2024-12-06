@@ -44,7 +44,7 @@ const Auth = () => {
 			}}
 		>
 			<div
-				id="form"
+				class="form"
 				style={{
 					border: `1px solid ${themeBlue}`,
 					padding: "1vmax",
