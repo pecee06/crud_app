@@ -1,14 +1,12 @@
 import { Input, Button } from "./";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { host, themeBlue, themeGreen } from "../constants";
-import { add } from "../redux/contacts.slice";
 
 const Dashboard = () => {
 	const [name, setName] = useState("");
 	const [phone, setPhone] = useState("");
 	const userState = useSelector((state) => state.user);
-	const dispatch = useDispatch();
 
 	return (
 		<div
@@ -48,7 +46,7 @@ const Dashboard = () => {
 						},
 						body: JSON.stringify(obj)
 					})
-						.then(() => dispatch(add(obj)))
+						.then(() => location.reload())
 						.catch((error) => console.error(error));
 					setName("");
 					setPhone("");

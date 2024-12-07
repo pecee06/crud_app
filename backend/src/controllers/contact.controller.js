@@ -68,7 +68,7 @@ export const editContact = async (req, res) => {
 	try {
 		await connection.query(`
 			update contact set name = '${newName}', phone = '${newPhone}'
-			where username = ${uname} and phone = ${oldPhone};
+			where username = '${uname}' and phone = '${oldPhone}';
 		`);
 		res.status(200).json(
 			new ApiResponse({

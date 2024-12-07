@@ -32,17 +32,17 @@ const Contact = ({ name, phone }) => {
 						},
 						body: JSON.stringify({
 							uname: localStorage.getItem("uname"),
-							newName,
-							newPhone,
+							newName: newName ? newName : name,
+							newPhone: newPhone ? newPhone : phone,
 							oldPhone: phone
 						})
 					})
 						.then(() => {
 							dispatch(
 								edit({
-									oldPhone,
-									newPhone,
-									newName
+									oldPhone: phone,
+									newPhone: newPhone ? newPhone : phone,
+									newName: newName ? newName : name
 								})
 							);
 						})
