@@ -21,7 +21,7 @@ const ContactList = () => {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) dispatch(renew(data.dets));
-				else alert(data.message);
+				//else alert(data.message);
 			})
 			.catch((error) => console.error(error));
 	}, []);
